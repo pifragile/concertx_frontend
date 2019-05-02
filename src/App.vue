@@ -29,7 +29,5 @@ export default {
 }
 body{
   background: url("assets/soundcheck.jpg") fixed;
-  background-color: rgba(255, 255, 255, 0.7) !important;
-  background-blend-mode: color;
 }
 </style>
