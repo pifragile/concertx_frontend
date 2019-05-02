@@ -1,6 +1,6 @@
 <template lang ="pug">
   .container.d-flex.justify-content-center
-    form
+    form(@submit.prevent="submit")
       .form-group
         label ort
         div
