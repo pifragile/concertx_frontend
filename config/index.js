@@ -5,6 +5,8 @@
 const path = require('path')
 
 module.exports = {
+  backendUrl: process.env.NODE_ENV === 'production' ?
+    'https://mariachi.pythonanywhere.com/' : 'http://localhost:8000',
   dev: {
     // Paths
     assetsSubDirectory: 'static',
