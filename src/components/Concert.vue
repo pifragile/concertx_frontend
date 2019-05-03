@@ -3,7 +3,12 @@
     .inner.d-flex.justify-content-between.flex-wrap
       div
         h3
-          input(size="25" v-model="location" @input="updateConcert" v-if="isOwner" type="text")
+          input.locationInput(
+            size="25"
+            v-model="location"
+            @input="updateConcert"
+            v-if="isOwner"
+            type="text")
           span(v-else) {{location}}
       .inner.d-flex.justify-content-right.flex-wrap
         div
@@ -22,11 +27,12 @@
       .marginTopBot(v-else) organisiert vom {{owner.username}}
     .inner
       span zuegseit:&nbsp;&nbsp;&nbsp;
-      span(
-        v-for="(user, index) in acceptedBy"
-        :key="'accepted-by-' + index"
-        v-if="isNotSelf(user)") {{user.username}} &nbsp;&nbsp;&nbsp;
-</template>
+      div
+        span(
+          v-for="(user, index) in acceptedBy"
+          :key="'accepted-by-' + index"
+          v-if="isNotSelf(user)") {{user.username}} &nbsp;&nbsp;&nbsp;
+  </template>
 
 <script>
 import datePicker from 'vue-bootstrap-datetimepicker';
@@ -124,5 +130,17 @@ export default {
   {
     background: transparent;
     border: none;
+  }
+  @media screen and (max-width: 500px){
+    .container {width: 310px;}
+    .inner {
+      justify-content: center;
+      display: flex;
+      align-items: center;
+    }
+    .locationInput {
+      width: 300px;
+      text-align: center;
+    }
   }
 </style>
