@@ -12,26 +12,39 @@
           span(v-else) {{location}}
       .inner.d-flex.justify-content-right.flex-wrap
         div
-          .dateTimeInputContainer(v-if="isOwner")
-            date-picker(v-model="date" :config="dateTimeOptions").marginTopBot
-          p.dateTime(v-else) {{date}}
-        div
-          label.switch.marginTopBot
-            input.success(type="checkbox" v-model="attending")
-            span.slider.round
+          .date-time-input-container(v-if="isOwner")
+            date-picker(v-model="date" :config="dateTimeOptions").margin-top-bot
+          p.date-time(v-else) {{date}}
+
+        .btn-group.btn-group-toggle.yes-no(role="group")
+          button.btn.btn-outline-success(
+            type="button"
+            :class="{active: accepted}"
+            @click="accept") JA
+          button.btn.btn-outline-danger(
+            type="button"
+            :class="{active: canceled}"
+            @click="cancel") NEI
     .inner
-      .marginTopBot(v-if="isOwner")
+      .margin-top-bot(v-if="isOwner")
         span bestätigt&nbsp;
         span
           input(type="checkbox" id="checkbox" v-model="confirmed" v-on:change="updateConcert")
-      .marginTopBot(v-else) organisiert vom {{owner.username}}
-    .inner
-      span zuegseit:&nbsp;&nbsp;&nbsp;
-      div
-        span(
+      .margin-top-bot(v-else) organisiert vom {{owner.username}}
+    .inner(v-if="someAccepted")
+      span.small-margin-right.text-bold zuegseit:
+      span
+        span.small-margin-right(
           v-for="(user, index) in acceptedBy"
           :key="'accepted-by-' + index"
-          v-if="isNotSelf(user)") {{user.username}} &nbsp;&nbsp;&nbsp;
+          v-if="isNotSelf(user)") {{user.username}}
+    .inner(v-if="someCanceled")
+      span.small-margin-right.text-bold abgseit:
+      span
+        span.small-margin-right(
+          v-for="(user, index) in canceledBy"
+          :key="'canceled-by-' + index"
+          v-if="isNotSelf(user)") {{user.username}}
   </template>
 
 <script>
@@ -54,6 +67,7 @@ export default {
     return {
       ...this.concert,
       acceptedBy: this.concert.accepted_by,
+      canceledBy: this.concert.canceled_by,
       date: new Moment(this.concert.date).format('DD/MM/YYYY HH:mm'),
       dateTimeOptions: {
         format: 'DD/MM/YYYY HH:mm',
@@ -65,16 +79,17 @@ export default {
     isOwner() {
       return this.owner.id === this.userId;
     },
-    attending: {
-      get() {
-        return this.acceptedBy.filter(user => user.id === this.userId).length > 0 ? 'on' : null;
-      },
-      async set(val) {
-        const updatedConcert = val ?
-          await concerts.accept(this.id) :
-          await concerts.cancel(this.id);
-        this.acceptedBy = updatedConcert.data.accepted_by;
-      },
+    accepted() {
+      return this.acceptedBy.filter(user => user.id === this.userId).length > 0;
+    },
+    canceled() {
+      return this.canceledBy.filter(user => user.id === this.userId).length > 0;
+    },
+    someAccepted() {
+      return this.acceptedBy.length - (this.accepted ? 1 : 0);
+    },
+    someCanceled() {
+      return this.canceledBy.length - (this.canceled ? 1 : 0);
     },
   },
   watch: {
@@ -91,49 +106,72 @@ export default {
     isNotSelf(user) {
       return user.id !== this.userId;
     },
+    async accept() {
+      const {
+        accepted_by: acceptedBy,
+        canceled_by: canceledBy,
+      } = (await concerts.accept(this.id)).data;
+      this.updateAcceptedCanceled(acceptedBy, canceledBy);
+    },
+    async cancel() {
+      const {
+        accepted_by: acceptedBy,
+        canceled_by: canceledBy,
+      } = (await concerts.cancel(this.id)).data;
+      this.updateAcceptedCanceled(acceptedBy, canceledBy);
+    },
+    updateAcceptedCanceled(acceptedBy, canceledBy) {
+      this.acceptedBy = acceptedBy;
+      this.canceledBy = canceledBy;
+    },
   },
 };
 </script>
 
 <style scoped>
-  @media screen and (max-width: 768px) { .inner {flex-direction: column;} }
+  .text-bold{
+    font-weight: 500;
+  }
   .concert-container {
     border-radius: 5px;
     border: solid 1px;
     margin-bottom: 10px;
   }
-  .dateTimeInputContainer {
+  .date-time-input-container {
     width: 154px;
     position: relative;
   }
-  .dateTime{
-    margin: 8px 16px 0px 13px;
+  .date-time{
+    margin: 8px 16px 4px 13px;
   }
   .container {
     width: 800px;
     padding: 2px;
   }
-  .marginLeft {
-    margin-left: 30px;
-  }
-  .marginTopBot {
+  .margin-top-bot {
     margin: 3px 0 3px 0;
   }
   .confirmed {
     background-color: rgba(116, 255, 38, 0.25);
   }
-
-  .green {
-    background-color: #cc0000;
+  .small-margin-right{
+    margin-right: 20px;
   }
   input[type="text"]
   {
     background: transparent;
     border: none;
   }
-  @media screen and (max-width: 500px){
-    .container {width: 310px;}
+  .btn:focus, .btn:active {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  .yes-no{
+    width: 100px;
+  }
+  @media screen and (max-width: 768px) {
     .inner {
+      flex-direction: column;
       justify-content: center;
       display: flex;
       align-items: center;
@@ -142,5 +180,11 @@ export default {
       width: 300px;
       text-align: center;
     }
+  }
+  @media screen and (max-width: 600px){
+    .container {width: 480px;}
+  }
+  @media screen and (max-width: 500px){
+    .container {width: 310px;}
   }
 </style>
