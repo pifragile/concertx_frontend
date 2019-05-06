@@ -44,12 +44,6 @@ export default {
 </script>
 
 <style scoped>
-  @media screen and (max-width: 768px) { .inner {flex-direction: column;} }
-  .concert-container {
-    border-radius: 5px;
-    border: solid 1px;
-    margin-bottom: 10px;
-  }
   .dateTimeInputContainer {
     width: 154px;
     position: relative;
@@ -61,5 +55,8 @@ export default {
   }
   .marginTopBot {
     margin: 3px 0 3px 0;
+  }
+  @media screen and (max-width: 768px) {
+    .container {width: 300px;}
   }
 </style>

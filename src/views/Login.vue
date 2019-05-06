@@ -1,5 +1,5 @@
 <template>
-  <div id="login-view">
+  <div id="login-view" class="container d-flex flex-column justify-content-center">
     <h1>Login</h1>
     <form @submit.prevent="submit">
       <input v-model="inputs.username" type="text" id="username" placeholder="username">
@@ -30,8 +30,12 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 form input {
   display: block
+}
+.container {
+  width: 205px;
+  margin-top: 100px;
 }
 </style>

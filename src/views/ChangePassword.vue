@@ -1,5 +1,5 @@
 <template>
-  <div id="change-password-view">
+  <div id="change-password-view" class="container d-flex flex-column justify-content-center">
     <h1>Passwort ändere</h1>
     <form @submit.prevent="submit">
       <input v-model="inputs.password" type="password" id="password" placeholder="password">
@@ -7,11 +7,11 @@
         v-model="inputs.password2"
         type="password" id="password2"
         placeholder="confirm password">
+      <button @click="changePassword(inputs)" id="change-password-button">
+        passwort ändere
+      </button>
+      <p v-for="(error, index) in errors" v-bind:key="'error' + index">{{error}}</p>
     </form>
-    <button @click="changePassword(inputs)" id="change-password-button">
-      passwort ändere
-    </button>
-    <p v-for="(error, index) in errors" v-bind:key="'error' + index">{{error}}</p>
   </div>
 </template>
 
@@ -44,4 +44,7 @@ export default {
 form input {
   display: block
 }
+
+.container {width: 205px;}
+
 </style>
