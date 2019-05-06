@@ -75,7 +75,10 @@ export default {
       acceptedBy: this.concert.accepted_by,
       canceledBy: this.concert.canceled_by,
       date: new Moment(this.concert.date).format(DATE_FORMAT),
-      dateTimeOptions: config.dateTimeOptions,
+      dateTimeOptions: {
+        ...config.dateTimeOptions,
+        widgetParent: `#c-${this.domId}`,
+      },
     };
   },
   computed: {
@@ -163,6 +166,7 @@ export default {
     font-weight: 500;
   }
   .concert-container {
+    position: relative;
     border-radius: 5px;
     border: solid 1px;
     margin-bottom: 10px;

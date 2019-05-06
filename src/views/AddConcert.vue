@@ -1,13 +1,13 @@
 <template lang ="pug">
-  .container.d-flex.justify-content-center
+  .container.d-flex.justify-content-center.addConcertContainer
     form(@submit.prevent="addConcert")
       .form-group
         label ort
         div
-          input(size="25" v-model="location" type="text")
+          input.location-input(size="25" v-model="location" type="text")
       .form-group
         label datum und zit
-        .dateTimeInputContainer
+        .date-time-input-container
           date-picker(v-model="date" :config="dateTimeOptions").marginTopBot
       button(type="submit") Ok
 </template>
@@ -27,7 +27,10 @@ export default {
     return {
       location: '',
       date: Moment().format('DD/MM/YYYY HH:mm'),
-      dateTimeOptions: config.dateTimeOptions,
+      dateTimeOptions: {
+        ...config.dateTimeOptions,
+        widgetParent: '.addConcertContainer',
+      },
     };
   },
   methods: {
@@ -42,11 +45,12 @@ export default {
 </script>
 
 <style scoped>
-  .dateTimeInputContainer {
+  .date-time-input-container {
     width: 154px;
     position: relative;
   }
   .container {
+    position: relative;
     width: 800px;
     padding: 2px;
     margin-top: 100px;
