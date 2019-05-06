@@ -17,11 +17,11 @@
           p.date-time(v-else) {{date}}
 
         .btn-group.btn-group-toggle.yes-no(role="group")
-          button.btn.btn-outline-success(
+          button.btn.btn-outline-secondary(
             type="button"
             :class="{active: accepted}"
             @click="accept") JA
-          button.btn.btn-outline-danger(
+          button.btn.btn-outline-secondary(
             type="button"
             :class="{active: canceled}"
             @click="cancel") NEI
