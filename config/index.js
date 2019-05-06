@@ -5,6 +5,11 @@
 const path = require('path')
 
 module.exports = {
+  dateTimeOptions: {
+    format: 'DD/MM/YYYY HH:mm',
+    useCurrent: false,
+    minDate: require('moment')().subtract(1, 'day'),
+  },
   backendUrl: process.env.NODE_ENV === 'production' ?
     'https://mariachi.pythonanywhere.com/' : 'http://localhost:8000',
   dev: {

@@ -55,6 +55,7 @@ import Moment from 'moment';
 import '../assets/css/toggle.css';
 import '../assets/css/icono.min.css';
 import concerts from '../api/concerts';
+import config from '../../config';
 
 const DATE_FORMAT = 'DD/MM/YYYY HH:mm';
 
@@ -74,10 +75,7 @@ export default {
       acceptedBy: this.concert.accepted_by,
       canceledBy: this.concert.canceled_by,
       date: new Moment(this.concert.date).format(DATE_FORMAT),
-      dateTimeOptions: {
-        format: DATE_FORMAT,
-        useCurrent: false,
-      },
+      dateTimeOptions: config.dateTimeOptions,
     };
   },
   computed: {

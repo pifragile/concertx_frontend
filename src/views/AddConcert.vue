@@ -16,6 +16,7 @@
 import datePicker from 'vue-bootstrap-datetimepicker';
 import Moment from 'moment/moment';
 import concerts from '../api/concerts';
+import config from '../../config';
 
 export default {
   name: 'home',
@@ -26,10 +27,7 @@ export default {
     return {
       location: '',
       date: Moment().format('DD/MM/YYYY HH:mm'),
-      dateTimeOptions: {
-        format: 'DD/MM/YYYY HH:mm',
-        useCurrent: false,
-      },
+      dateTimeOptions: config.dateTimeOptions,
     };
   },
   methods: {
