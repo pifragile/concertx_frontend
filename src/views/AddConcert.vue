@@ -1,6 +1,6 @@
 <template lang ="pug">
   .container.d-flex.justify-content-center
-    form(@submit.prevent="submit")
+    form(@submit.prevent="addConcert")
       .form-group
         label ort
         div
@@ -9,7 +9,7 @@
         label datum und zit
         .dateTimeInputContainer
           date-picker(v-model="date" :config="dateTimeOptions").marginTopBot
-      button(@click="addConcert") Ok
+      button(type="submit") Ok
 </template>
 
 <script>
