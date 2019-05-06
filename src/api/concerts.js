@@ -10,6 +10,9 @@ export default {
   modifyConcert(id, data) {
     return session.patch(`/concerts/${id}/`, data);
   },
+  deleteConcert(id) {
+    return session.delete(`/concerts/${id}/`);
+  },
   accept(id) {
     return session.get(`/concerts/${id}/accept/`);
   },

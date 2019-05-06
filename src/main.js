@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import BootstrapVue from 'bootstrap-vue';
 import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
+import VModal from 'vue-js-modal';
 import jQuery from 'jquery';
 import Vue from 'vue';
 import App from './App';
@@ -25,6 +26,7 @@ jQuery.extend(true, jQuery.fn.datetimepicker.defaults, {
 });
 
 Vue.use(BootstrapVue);
+Vue.use(VModal, { dialog: true });
 
 Vue.config.productionTip = false;
 export default new Vue({

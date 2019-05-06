@@ -5,6 +5,7 @@
     <li><router-link to="/add_concert">neus konzert</router-link></li>
     <li><router-link to="/change_password">passwort ändere</router-link></li>
     <li><router-link to="/logout">logout</router-link></li>
+    <li><span>beta v1.0</span></li>
   </ul>
 </template>
 

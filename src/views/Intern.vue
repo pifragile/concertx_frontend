@@ -2,7 +2,9 @@
   <div id="home-view">
     <Concert
       v-for="(concert, index) in concerts"
-      :domId="index" :key="index"
+      v-on:concertDeleted="removeConcert"
+      :domId="index"
+      :key="concert.id"
       :concert="concert"
       :userId="userId"></Concert>
   </div>
@@ -29,6 +31,11 @@ export default {
       .data
       .sort((a, b) => new Date(b.date) - new Date(a.date));
     this.userId = (await auth.getAccountDetails()).data.pk;
+  },
+  methods: {
+    removeConcert(id) {
+      this.concerts = this.concerts.filter(concert => concert.id !== id);
+    },
   },
 };
 </script>

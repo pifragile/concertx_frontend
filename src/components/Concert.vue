@@ -1,18 +1,20 @@
 <template lang ="pug">
   .concert-container.container(:class="{ confirmed }" :id="'c-' + domId")
+    v-dialog
     .inner.d-flex.justify-content-between.flex-wrap
       div
         h3
-          input.locationInput(
+          a.icono-cross.delete-icon(v-if="isOwnerAndCanChange" @click="deleteConcert")
+          input.location-input(
             size="25"
             v-model="location"
             @input="updateConcert"
-            v-if="isOwner"
+            v-if="isOwnerAndCanChange"
             type="text")
           span(v-else) {{location}}
       .inner.d-flex.justify-content-right.flex-wrap
         div
-          .date-time-input-container(v-if="isOwner")
+          .date-time-input-container(v-if="isOwnerAndCanChange")
             date-picker(v-model="date" :config="dateTimeOptions").margin-top-bot
           p.date-time(v-else) {{date}}
 
@@ -26,7 +28,7 @@
             :class="{active: canceled}"
             @click="cancel") NEI
     .inner
-      .margin-top-bot(v-if="isOwner")
+      .margin-top-bot(v-if="isOwnerAndCanChange")
         span bestätigt&nbsp;
         span
           input(type="checkbox" id="checkbox" v-model="confirmed" v-on:change="updateConcert")
@@ -51,7 +53,10 @@
 import datePicker from 'vue-bootstrap-datetimepicker';
 import Moment from 'moment';
 import '../assets/css/toggle.css';
+import '../assets/css/icono.min.css';
 import concerts from '../api/concerts';
+
+const DATE_FORMAT = 'DD/MM/YYYY HH:mm';
 
 export default {
   name: 'home',
@@ -68,16 +73,18 @@ export default {
       ...this.concert,
       acceptedBy: this.concert.accepted_by,
       canceledBy: this.concert.canceled_by,
-      date: new Moment(this.concert.date).format('DD/MM/YYYY HH:mm'),
+      date: new Moment(this.concert.date).format(DATE_FORMAT),
       dateTimeOptions: {
-        format: 'DD/MM/YYYY HH:mm',
+        format: DATE_FORMAT,
         useCurrent: false,
       },
     };
   },
   computed: {
-    isOwner() {
-      return this.owner.id === this.userId;
+    isOwnerAndCanChange() {
+      const ONE_HOUR = 60 * 60 * 1000;
+      return this.owner.id === this.userId &&
+        Moment() - new Moment(this.date, DATE_FORMAT) < 12 * ONE_HOUR;
     },
     accepted() {
       return this.acceptedBy.filter(user => user.id === this.userId).length > 0;
@@ -100,8 +107,33 @@ export default {
   methods: {
     updateConcert() {
       const { location, date, owner, id, confirmed } = this;
-      const dbDateString = new Moment(date, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DDTHH:mm:ssZ');
+      const dbDateString = new Moment(date, DATE_FORMAT).format('YYYY-MM-DDTHH:mm:ssZ');
       concerts.modifyConcert(this.id, { location, date: dbDateString, owner, id, confirmed });
+    },
+    deleteConcert() {
+      const self = this;
+      this.$modal.show('dialog', {
+        title: 'Achtung!',
+        text: 'Wetsch wükki lösche?',
+        buttons: [
+          {
+            title: 'ja',
+            handler: async () => {
+              try {
+                const res = await concerts.deleteConcert(self.id);
+                if (res.status - 200 < 10) this.$emit('concertDeleted', self.id);
+              } catch (err) {
+                this.$modal.hide('dialog');
+              } finally {
+                this.$modal.hide('dialog');
+              }
+            },
+          },
+          {
+            title: 'nei',
+          },
+        ],
+      });
     },
     isNotSelf(user) {
       return user.id !== this.userId;
@@ -169,6 +201,13 @@ export default {
   .yes-no{
     width: 100px;
   }
+  .delete-icon{
+    margin-right: 15px;
+    vertical-align:middle;
+  }
+  .location-input {
+    vertical-align:middle;
+  }
   @media screen and (max-width: 768px) {
     .inner {
       flex-direction: column;
@@ -176,7 +215,7 @@ export default {
       display: flex;
       align-items: center;
     }
-    .locationInput {
+    .location-input {
       width: 300px;
       text-align: center;
     }
