@@ -1,7 +1,7 @@
 <template>
   <div id="home-view" class="overlay">
     <div class="text">
-      <h1>Mariachi de Jesus Guatemala</h1>
+      <h1>Mariachi de Jesús Guatemala</h1>
       <h4>Dini Partyband usem Herz vom Chreis 4</h4>
       <p>Für booking am loro alüüte!</p>
   </div>
