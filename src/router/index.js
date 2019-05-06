@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import Home from '../views/Home';
+import Intern from '../views/Intern';
 import Login from '../views/Login';
 import Lost from '../views/Lost';
 
@@ -40,6 +41,13 @@ const redirectLogout = (to, from, next) => {
 Vue.use(Router);
 
 export default new Router({
+  mode: 'history',
+  scrollBehavior(to) {
+    if (to.hash) {
+      return { selector: to.hash };
+    }
+    return { x: 0, y: 0 };
+  },
   saveScrollPosition: true,
   routes: [
     {
@@ -49,6 +57,10 @@ export default new Router({
     {
       path: '/home',
       component: Home,
+    },
+    {
+      path: '/intern',
+      component: Intern,
       beforeEnter: requireAuthenticated,
     },
     {

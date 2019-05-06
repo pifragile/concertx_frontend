@@ -37,7 +37,7 @@ export default {
       const { location, date } = this;
       const dbDateString = new Moment(date, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DDTHH:mm:ssZ');
       const response = await concerts.addConcert(location, dbDateString);
-      if (response.status - 200 < 10) this.$router.push('/');
+      if (response.status - 200 < 10) this.$router.push('/intern');
     },
   },
 };

@@ -1,7 +1,7 @@
 <template>
   <ul class="navbar" id="navbar">
     <li><span>sali {{username}}</span></li>
-    <li><router-link to="/">home</router-link></li>
+    <li><router-link to="/intern">home</router-link></li>
     <li><router-link to="/add_concert">neus konzert</router-link></li>
     <li><router-link to="/change_password">passwort ändere</router-link></li>
     <li><router-link to="/logout">logout</router-link></li>

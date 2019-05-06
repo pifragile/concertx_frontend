@@ -31,7 +31,7 @@ export default {
   methods: {
     changePassword({ password, password2 }) {
       auth.changeAccountPassword(password, password2)
-        .then(() => this.$router.push('/'))
+        .then(() => this.$router.push('/intern'))
         .catch((error) => {
           this.errors = error.response.data.new_password2;
         });
@@ -46,5 +46,7 @@ form input {
 }
 
 .container {width: 205px;}
-
+body{
+  background: url("../assets/soundcheck.jpg") fixed;
+}
 </style>

@@ -24,7 +24,7 @@ export default {
   methods: {
     login({ username, password }) {
       this.$store.dispatch('auth/login', { username, password })
-        .then(() => this.$router.push('/'));
+        .then(() => this.$router.push('/intern'));
     },
   },
 };
