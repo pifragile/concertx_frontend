@@ -38,15 +38,13 @@
       span
         span.small-margin-right(
           v-for="(user, index) in acceptedBy"
-          :key="'accepted-by-' + index"
-          v-if="isNotSelf(user)") {{user.username}}
+          :key="'accepted-by-' + index") {{user.username}}
     .inner(v-if="someCanceled")
       span.small-margin-right.text-bold abgseit:
       span
         span.small-margin-right(
           v-for="(user, index) in canceledBy"
-          :key="'canceled-by-' + index"
-          v-if="isNotSelf(user)") {{user.username}}
+          :key="'canceled-by-' + index") {{user.username}}
   </template>
 
 <script>
