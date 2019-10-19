@@ -92,10 +92,10 @@ export default {
       return this.canceledBy.filter(user => user.id === this.userId).length > 0;
     },
     someAccepted() {
-      return this.acceptedBy.length - (this.accepted ? 1 : 0);
+      return this.acceptedBy.length > 0;
     },
     someCanceled() {
-      return this.canceledBy.length - (this.canceled ? 1 : 0);
+      return this.canceledBy.length > 0;
     },
   },
   watch: {
