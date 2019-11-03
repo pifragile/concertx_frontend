@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import auth from '../api/auth';
+import auth from '../api/auth'
 
 export default {
   data() {
@@ -26,18 +26,18 @@ export default {
         password2: '',
       },
       errors: [],
-    };
+    }
   },
   methods: {
     changePassword({ password, password2 }) {
       auth.changeAccountPassword(password, password2)
         .then(() => this.$router.push('/intern'))
         .catch((error) => {
-          this.errors = error.response.data.new_password2;
-        });
+          this.errors = error.response.data.new_password2
+        })
     },
   },
-};
+}
 </script>
 
 <style>

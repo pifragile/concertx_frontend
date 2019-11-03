@@ -6,9 +6,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex'
 
-import Navbar from './components/Navbar';
+import Navbar from './components/Navbar'
 
 export default {
   name: 'app',
@@ -18,7 +18,7 @@ export default {
   computed: mapGetters('auth', [
     'isAuthenticated',
   ]),
-};
+}
 </script>
 
 <style>

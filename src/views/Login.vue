@@ -19,15 +19,15 @@ export default {
         username: '',
         password: '',
       },
-    };
+    }
   },
   methods: {
     login({ username, password }) {
       this.$store.dispatch('auth/login', { username, password })
-        .then(() => this.$router.push('/intern'));
+        .then(() => this.$router.push('/intern'))
     },
   },
-};
+}
 </script>
 
 <style scoped>

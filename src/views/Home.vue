@@ -11,7 +11,7 @@
 <script>
 export default {
   name: 'lost',
-};
+}
 </script>
 
 <style scoped>

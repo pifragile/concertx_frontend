@@ -13,10 +13,10 @@
 </template>
 
 <script>
-import datePicker from 'vue-bootstrap-datetimepicker';
-import Moment from 'moment/moment';
-import concerts from '../api/concerts';
-import config from '../../config';
+import datePicker from 'vue-bootstrap-datetimepicker'
+import Moment from 'moment/moment'
+import concerts from '../api/concerts'
+import config from '../../config'
 
 export default {
   name: 'home',
@@ -31,17 +31,17 @@ export default {
         ...config.dateTimeOptions,
         widgetParent: '.addConcertContainer',
       },
-    };
+    }
   },
   methods: {
     async addConcert() {
-      const { location, date } = this;
-      const dbDateString = new Moment(date, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DDTHH:mm:ssZ');
-      const response = await concerts.addConcert(location, dbDateString);
-      if (response.status - 200 < 10) this.$router.push('/intern');
+      const { location, date } = this
+      const dbDateString = new Moment(date, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DDTHH:mm:ssZ')
+      const response = await concerts.addConcert(location, dbDateString)
+      if (response.status - 200 < 10) this.$router.push('/intern')
     },
   },
-};
+}
 </script>
 
 <style scoped>

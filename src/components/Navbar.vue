@@ -10,19 +10,19 @@
 </template>
 
 <script>
-import auth from '../api/auth';
+import auth from '../api/auth'
 
 export default {
   name: 'navbar',
   data() {
     return {
       username: '',
-    };
+    }
   },
   async created() {
-    this.username = (await auth.getAccountDetails()).data.username;
+    this.username = (await auth.getAccountDetails()).data.username
   },
-};
+}
 </script>
 
 <style scoped>
