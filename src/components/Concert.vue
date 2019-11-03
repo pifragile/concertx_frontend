@@ -1,6 +1,5 @@
 <template lang ="pug">
   .concert-container.container(:class="{ confirmed }" :id="'c-' + domId")
-    v-dialog
     .inner.d-flex.justify-content-between.flex-wrap
       div
         h3
