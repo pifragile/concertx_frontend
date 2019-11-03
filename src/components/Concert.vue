@@ -1,5 +1,7 @@
 <template lang ="pug">
   .concert-container.container(:class="{ confirmed }" :id="'c-' + domId")
+    // this is needed for the delete button of concerts to work
+    v-dialog
     .inner.d-flex.justify-content-between.flex-wrap
       div
         h3
