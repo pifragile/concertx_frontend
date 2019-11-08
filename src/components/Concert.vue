@@ -5,7 +5,7 @@
     .inner.d-flex.justify-content-between.flex-wrap
       div
         h3
-          a.icono-cross.delete-icon(v-if="isOwnerAndCanChange" @click="deleteConcert")
+          a.icono-cross.delete-icon(v-if="isOwnerAndCanChange" @click="deleteConcertModal")
           input.location-input(
             size="25"
             v-model="location"
@@ -110,7 +110,7 @@ export default {
       const dbDateString = new Moment(date, DATE_FORMAT).format('YYYY-MM-DDTHH:mm:ssZ')
       concerts.modifyConcert(this.id, { location, date: dbDateString, owner, id, confirmed })
     },
-    deleteConcert() {
+    deleteConcertModal() {
       const self = this
       this.$modal.show('dialog', {
         title: 'Achtung!',
@@ -120,8 +120,7 @@ export default {
             title: 'ja',
             handler: async () => {
               try {
-                const res = await concerts.deleteConcert(self.id)
-                if (res.status - 200 < 10) this.$emit('concertDeleted', self.id)
+                await self.deleteConcert()
               } catch (err) {
                 this.$modal.hide('dialog')
               } finally {
@@ -155,6 +154,10 @@ export default {
     updateAcceptedCanceled(acceptedBy, canceledBy) {
       this.acceptedBy = acceptedBy
       this.canceledBy = canceledBy
+    },
+    async deleteConcert() {
+      const res = await concerts.deleteConcert(this.id)
+      if (res.status - 200 < 10) this.$emit('concertDeleted', this.id)
     },
   },
 }

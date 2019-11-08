@@ -132,9 +132,59 @@ describe('updateConcert', () => {
     const wrapper = mount(Concert, { propsData })
     wrapper.setData({ confirmed: true })
     wrapper.vm.updateConcert()
-    const modifyConcertCallArgs = concerts.modifyConcert.mock.calls[0]
-    expect(modifyConcertCallArgs[0]).toEqual(5)
-    expect(modifyConcertCallArgs[1].date).toEqual('2000-01-01T00:00:00+01:00')
-    expect(modifyConcertCallArgs[1].confirmed).toBeTruthy()
+    const callArgs = concerts.modifyConcert.mock.calls[0]
+    expect(callArgs[0])
+      .toEqual(5)
+    expect(callArgs[1].date)
+      .toEqual('2000-01-01T00:00:00+01:00')
+    expect(callArgs[1].confirmed)
+      .toBeTruthy()
+  })
+})
+
+describe('deleteConcert', () => {
+  jest.mock('../../api/concerts')
+  test('should invoke concerts.deleteConcerts', async () => {
+    concerts.deleteConcert = jest.fn().mockReturnValue({ status: 200 })
+    const propsData = getBasePropsData()
+    propsData.concert.id = 3
+    const wrapper = mount(Concert, { propsData })
+    await wrapper.vm.deleteConcert()
+    const callArgs = concerts.deleteConcert.mock.calls[0]
+    expect(callArgs[0]).toEqual(3)
+    expect(wrapper.emitted('concertDeleted').length).toBe(1)
+    expect(wrapper.emitted('concertDeleted')[0][0]).toBe(3)
+  })
+})
+
+describe('accept', () => {
+  jest.mock('../../api/concerts')
+  test('should accept the concert', async () => {
+    concerts.accept = jest.fn().mockReturnValue({ data: { accepted_by: [2], canceled_by: [] } })
+    const propsData = getBasePropsData()
+    propsData.concert.id = 3
+    propsData.userId = 2
+    const wrapper = mount(Concert, { propsData })
+    await wrapper.vm.accept()
+    const callArgs = concerts.accept.mock.calls[0]
+    expect(callArgs[0]).toEqual(3)
+    expect(wrapper.vm.acceptedBy.length).toBe(1)
+    expect(wrapper.vm.acceptedBy[0]).toBe(2)
+  })
+})
+
+describe('cancel', () => {
+  jest.mock('../../api/concerts')
+  test('should cancel the concert', async () => {
+    concerts.cancel = jest.fn().mockReturnValue({ data: { accepted_by: [2], canceled_by: [] } })
+    const propsData = getBasePropsData()
+    propsData.concert.id = 3
+    propsData.userId = 2
+    const wrapper = mount(Concert, { propsData })
+    await wrapper.vm.cancel()
+    const callArgs = concerts.cancel.mock.calls[0]
+    expect(callArgs[0]).toEqual(3)
+    expect(wrapper.vm.acceptedBy.length).toBe(1)
+    expect(wrapper.vm.acceptedBy[0]).toBe(2)
   })
 })
