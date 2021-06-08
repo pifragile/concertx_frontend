@@ -1,5 +1,5 @@
 <template lang="pug">
-  .concert-container.container(:class="{ confirmed }" :id="'c-' + domId")
+  .concert-container.container(:class="{ confirmed }" :id="'c-' + domId" ref="'c-' + domId")
     // this is needed for the delete button of concerts to work
     v-dialog
     .inner.d-flex.justify-content-between.flex-wrap
@@ -46,6 +46,11 @@
         span.small-margin-right(
           v-for="(user, index) in canceledBy"
           :key="'canceled-by-' + index") {{user.username}}
+
+    .inner.d-flex.justify-content-right.link-container
+      button.btn.btn-outline-secondary(
+              type="button"
+              @click="copyURL") Link
 </template>
 
 <script>
@@ -248,6 +253,10 @@ input[type="text"] {
   }
 }
 
+.link-container {
+  width:100%;
+  justify-content: flex-end;
+}
 @media screen and (max-width: 600px) {
   .container {
     width: 480px;
