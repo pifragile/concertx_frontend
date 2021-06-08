@@ -34,23 +34,25 @@
         span
           input(type="checkbox" id="checkbox" v-model="confirmed" v-on:change="updateConcert")
       .margin-top-bot(v-else) organisiert vom {{owner.username}}
-    .inner(v-if="someAccepted")
-      span.small-margin-right.text-bold zuegseit:
-      span
-        span.small-margin-right(
-          v-for="(user, index) in acceptedBy"
-          :key="'accepted-by-' + index") {{user.username}}
-    .inner(v-if="someCanceled")
-      span.small-margin-right.text-bold abgseit:
-      span
-        span.small-margin-right(
-          v-for="(user, index) in canceledBy"
-          :key="'canceled-by-' + index") {{user.username}}
+    .inner.d-flex.justify-content-between.flex-wrap
+      div
+        .inner(v-if="someAccepted")
+          span.small-margin-right.text-bold zuegseit:
+          span
+            span.small-margin-right(
+              v-for="(user, index) in acceptedBy"
+              :key="'accepted-by-' + index") {{user.username}}
+        .inner(v-if="someCanceled")
+          span.small-margin-right.text-bold abgseit:
+          span
+            span.small-margin-right(
+              v-for="(user, index) in canceledBy"
+              :key="'canceled-by-' + index") {{user.username}}
 
-    .inner.d-flex.justify-content-right.link-container
-      button.btn.btn-outline-secondary(
-              type="button"
-              @click="copyURL") Link
+      .inner.d-flex.justify-content-right.link-container
+        button.btn.btn-outline-secondary(
+                type="button"
+                @click="copyURL") Link
 </template>
 
 <script>
@@ -254,7 +256,6 @@ input[type="text"] {
 }
 
 .link-container {
-  width:100%;
   justify-content: flex-end;
 }
 @media screen and (max-width: 600px) {
