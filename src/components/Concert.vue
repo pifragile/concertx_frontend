@@ -1,4 +1,4 @@
-<template lang ="pug">
+<template lang="pug">
   .concert-container.container(:class="{ confirmed }" :id="'c-' + domId")
     // this is needed for the delete button of concerts to work
     v-dialog
@@ -46,17 +46,17 @@
         span.small-margin-right(
           v-for="(user, index) in canceledBy"
           :key="'canceled-by-' + index") {{user.username}}
-  </template>
+</template>
 
 <script>
-import datePicker from 'vue-bootstrap-datetimepicker'
-import Moment from 'moment'
-import '../assets/css/toggle.css'
-import '../assets/css/icono.min.css'
-import concerts from '../api/concerts'
-import config from '../../config'
+import datePicker from 'vue-bootstrap-datetimepicker';
+import Moment from 'moment';
+import '../assets/css/toggle.css';
+import '../assets/css/icono.min.css';
+import concerts from '../api/concerts';
+import config from '../../config';
 
-const DATE_FORMAT = 'DD/MM/YYYY HH:mm'
+const DATE_FORMAT = 'DD/MM/YYYY HH:mm';
 
 export default {
   name: 'home',
@@ -78,40 +78,40 @@ export default {
         ...config.dateTimeOptions,
         widgetParent: `#c-${this.domId}`,
       },
-    }
+    };
   },
   computed: {
     isOwnerAndCanChange() {
-      const ONE_HOUR = 60 * 60 * 1000
+      const ONE_HOUR = 60 * 60 * 1000;
       return this.owner.id === this.userId &&
-        Moment() - new Moment(this.date, DATE_FORMAT) < 12 * ONE_HOUR
+        Moment() - new Moment(this.date, DATE_FORMAT) < 12 * ONE_HOUR;
     },
     accepted() {
-      return this.acceptedBy.filter(user => user.id === this.userId).length > 0
+      return this.acceptedBy.filter(user => user.id === this.userId).length > 0;
     },
     canceled() {
-      return this.canceledBy.filter(user => user.id === this.userId).length > 0
+      return this.canceledBy.filter(user => user.id === this.userId).length > 0;
     },
     someAccepted() {
-      return this.acceptedBy.length > 0
+      return this.acceptedBy.length > 0;
     },
     someCanceled() {
-      return this.canceledBy.length > 0
+      return this.canceledBy.length > 0;
     },
   },
   watch: {
     date() {
-      this.updateConcert()
+      this.updateConcert();
     },
   },
   methods: {
     updateConcert() {
-      const { location, date, owner, id, confirmed } = this
-      const dbDateString = new Moment(date, DATE_FORMAT).format('YYYY-MM-DDTHH:mm:ssZ')
-      concerts.modifyConcert(this.id, { location, date: dbDateString, owner, id, confirmed })
+      const { location, date, owner, id, confirmed } = this;
+      const dbDateString = new Moment(date, DATE_FORMAT).format('YYYY-MM-DDTHH:mm:ssZ');
+      concerts.modifyConcert(this.id, { location, date: dbDateString, owner, id, confirmed });
     },
     deleteConcertModal() {
-      const self = this
+      const self = this;
       this.$modal.show('dialog', {
         title: 'Achtung!',
         text: 'Wetsch wükki lösche?',
@@ -120,11 +120,11 @@ export default {
             title: 'ja',
             handler: async () => {
               try {
-                await self.deleteConcert()
+                await self.deleteConcert();
               } catch (err) {
-                this.$modal.hide('dialog')
+                this.$modal.hide('dialog');
               } finally {
-                this.$modal.hide('dialog')
+                this.$modal.hide('dialog');
               }
             },
           },
@@ -132,102 +132,131 @@ export default {
             title: 'nei',
           },
         ],
-      })
+      });
     },
     isNotSelf(user) {
-      return user.id !== this.userId
+      return user.id !== this.userId;
     },
     async accept() {
       const {
         accepted_by: acceptedBy,
         canceled_by: canceledBy,
-      } = (await concerts.accept(this.id)).data
-      this.updateAcceptedCanceled(acceptedBy, canceledBy)
+      } = (await concerts.accept(this.id)).data;
+      this.updateAcceptedCanceled(acceptedBy, canceledBy);
     },
     async cancel() {
       const {
         accepted_by: acceptedBy,
         canceled_by: canceledBy,
-      } = (await concerts.cancel(this.id)).data
-      this.updateAcceptedCanceled(acceptedBy, canceledBy)
+      } = (await concerts.cancel(this.id)).data;
+      this.updateAcceptedCanceled(acceptedBy, canceledBy);
     },
     updateAcceptedCanceled(acceptedBy, canceledBy) {
-      this.acceptedBy = acceptedBy
-      this.canceledBy = canceledBy
+      this.acceptedBy = acceptedBy;
+      this.canceledBy = canceledBy;
     },
     async deleteConcert() {
-      const res = await concerts.deleteConcert(this.id)
-      if (res.status - 200 < 10) this.$emit('concertDeleted', this.id)
+      const res = await concerts.deleteConcert(this.id);
+      if (res.status - 200 < 10) this.$emit('concertDeleted', this.id);
     },
+    copyURL() {
+      const loc = window.location;
+      const url = `${loc.host}${loc.pathname}#c-${this.domId}`;
+      var url_input = document.createElement('input');
+      url_input.setAttribute('value', url);
+      document.body.appendChild(url_input);
+      url_input.select();
+      var result = document.execCommand('copy');
+      document.body.removeChild(url_input);
+    }
   },
-}
+};
 </script>
 
 <style scoped>
-  .text-bold{
-    font-weight: 500;
+.text-bold {
+  font-weight: 500;
+}
+
+.concert-container {
+  position: relative;
+  border-radius: 5px;
+  border: solid 1px;
+  margin-bottom: 10px;
+}
+
+.date-time-input-container {
+  width: 154px;
+  position: relative;
+}
+
+.date-time {
+  margin: 8px 16px 4px 13px;
+}
+
+.container {
+  width: 800px;
+  padding: 2px;
+}
+
+.margin-top-bot {
+  margin: 3px 0 3px 0;
+}
+
+.confirmed {
+  background-color: rgba(116, 255, 38, 0.25);
+}
+
+.small-margin-right {
+  margin-right: 20px;
+}
+
+input[type="text"] {
+  background: transparent;
+  border: none;
+}
+
+.btn:focus, .btn:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.yes-no {
+  width: 100px;
+}
+
+.delete-icon {
+  margin-right: 15px;
+  vertical-align: middle;
+}
+
+.location-input {
+  vertical-align: middle;
+}
+
+@media screen and (max-width: 768px) {
+  .inner {
+    flex-direction: column;
+    justify-content: center;
+    display: flex;
+    align-items: center;
   }
-  .concert-container {
-    position: relative;
-    border-radius: 5px;
-    border: solid 1px;
-    margin-bottom: 10px;
-  }
-  .date-time-input-container {
-    width: 154px;
-    position: relative;
-  }
-  .date-time{
-    margin: 8px 16px 4px 13px;
-  }
-  .container {
-    width: 800px;
-    padding: 2px;
-  }
-  .margin-top-bot {
-    margin: 3px 0 3px 0;
-  }
-  .confirmed {
-    background-color: rgba(116, 255, 38, 0.25);
-  }
-  .small-margin-right{
-    margin-right: 20px;
-  }
-  input[type="text"]
-  {
-    background: transparent;
-    border: none;
-  }
-  .btn:focus, .btn:active {
-    outline: none !important;
-    box-shadow: none !important;
-  }
-  .yes-no{
-    width: 100px;
-  }
-  .delete-icon{
-    margin-right: 15px;
-    vertical-align:middle;
-  }
+
   .location-input {
-    vertical-align:middle;
+    width: 300px;
+    text-align: center;
   }
-  @media screen and (max-width: 768px) {
-    .inner {
-      flex-direction: column;
-      justify-content: center;
-      display: flex;
-      align-items: center;
-    }
-    .location-input {
-      width: 300px;
-      text-align: center;
-    }
+}
+
+@media screen and (max-width: 600px) {
+  .container {
+    width: 480px;
   }
-  @media screen and (max-width: 600px){
-    .container {width: 480px;}
+}
+
+@media screen and (max-width: 500px) {
+  .container {
+    width: 310px;
   }
-  @media screen and (max-width: 500px){
-    .container {width: 310px;}
-  }
+}
 </style>
