@@ -22,7 +22,7 @@
     "moment-timezone": "^0.5.25",
     "pc-bootstrap4-datetimepicker": "^4.17.50",
     "popper.js": "^1.15.0",
-    "pug": "^2.0.3",
+    "pug": "^3.0.1",
     "pug-loader": "^2.4.0",
     "vue": "2.6.10",
     "vue-bootstrap-datetimepicker": "^5.0.1",
