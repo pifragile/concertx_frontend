@@ -1,5 +1,6 @@
 <template lang="pug">
-  .concert-container.container(:class="{ confirmed }" :id="'c-' + domId" ref="'c-' + domId")
+  .concert-container.container(:class="{ confirmed }" :id="'c-' + domId")
+    div(:id="'anchor-' + concert.id")
     // this is needed for the delete button of concerts to work
     v-dialog
     .inner.d-flex.justify-content-between.flex-wrap
@@ -168,7 +169,7 @@ export default {
     },
     copyURL() {
       const loc = window.location
-      const url = `${loc.host}${loc.pathname}#c-${this.domId}`
+      const url = `${loc.host}${loc.pathname}#anchor-${this.concert.id}`
       var url_input = document.createElement('input')
       url_input.setAttribute('value', url)
       document.body.appendChild(url_input)

@@ -18,11 +18,28 @@ import auth from '../api/auth';
 export default {
   name: 'home',
   updated() {
+    // can use anchor-<concert-id> to directly jump to the specified concert
+    // this is done because anchors are not working on initial page load
     const section = window.location.hash.replace('#', '')
-
+    console.log(this.$children)
     if (section) {
-      const el = this.$children[parseInt(section.replace('c-', ''))].$el
-      this.$nextTick(() => el.scrollIntoView())
+      const split = section.split('anchor-')
+      if (split.length > 1) {
+        const key = parseInt(split[1])
+        let el = null
+        for (let i = 0; i < this.$children.length; i++){
+          const child = this.$children[i]
+          console.log(child.$vnode.key)
+          if (child.$vnode.key === key) {
+            el = child.$el
+            break
+          }
+        }
+
+        if (el) {
+          this.$nextTick(() => el.scrollIntoView())
+        }
+      }
     }
   },
   components: {
