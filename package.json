@@ -19,7 +19,7 @@
     "bootstrap-vue": "^2.0.0-rc.19",
     "jquery": "^3.4.0",
     "moment": "^2.24.0",
-    "moment-timezone": "^0.5.25",
+    "moment-timezone": "^0.5.35",
     "pc-bootstrap4-datetimepicker": "^4.17.50",
     "popper.js": "^1.15.0",
     "pug": "^2.0.3",
